@@ -102,8 +102,8 @@ public class EspetaculoTest {
 		List<Sessao> listaSessoes = esp.criaSessoes(LocalDate.parse("2015-01-01"),LocalDate.parse("2015-01-14"), LocalTime.parse("9:00"), Periodicidade.SEMANAL);
 		Assert.assertEquals(2, listaSessoes.size());		
 		
-		Assert.assertEquals(listaSessoes.get(0).getInicio(), new DateTime(2015,01,01,19,00));
-		Assert.assertEquals(listaSessoes.get(1).getInicio(), new DateTime(2015,01,8,19,00));
+		Assert.assertEquals(listaSessoes.get(0).getInicio(), new DateTime(2015,01,01,9,00));
+		Assert.assertEquals(listaSessoes.get(1).getInicio(), new DateTime(2015,01,8,9,00));
 	}
 	
 }
