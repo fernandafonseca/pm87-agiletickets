@@ -111,5 +111,31 @@ public class Sessao {
 	public BigDecimal getPreco() {
 		return preco;
 	}
+
+	public BigDecimal calculaPrecoBalletOrquestra() {
+		BigDecimal precoFinal = preco;
+
+		
+		if((totalIngressos - ingressosReservados) / totalIngressos.doubleValue() <= 0.50) { 
+			precoFinal = precoFinal.add(preco.multiply(BigDecimal.valueOf(0.20)));
+		} 
+		
+		if(duracaoEmMinutos > 60){
+			precoFinal = precoFinal.add(preco.multiply(BigDecimal.valueOf(0.10)));
+		}
+		return precoFinal;
+	}
+
+	public BigDecimal calculaPrecoCinemaShow() {
+		BigDecimal precoFinal = preco;
+		
+		//quando estiver acabando os ingressos... 
+		if((totalIngressos - ingressosReservados) / totalIngressos.doubleValue() <= 0.05) { 
+			precoFinal = precoFinal.add(preco.multiply(BigDecimal.valueOf(0.10)));
+		} else {
+			precoFinal = preco;
+		}
+		return precoFinal;
+	}
 	
 }

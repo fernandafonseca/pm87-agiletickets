@@ -112,25 +112,30 @@ public class EspetaculosController {
 			result.notFound();
 			return;
 		}
-
-		if (quantidade < 1) {
-			validator.add(new SimpleMessage("", "Você deve escolher um lugar ou mais"));
+		if (quantidade == null){ 
+			//validator.add(new SimpleMessage("", "Você deve digitar um número"));
+			// em caso de erro, redireciona para a lista de sessao
+			validator.onErrorRedirectTo(this).sessao(sessao.getId());
+		} else{
+			if (quantidade < 1) {
+				validator.add(new SimpleMessage("", "Você deve escolher um lugar ou mais"));
+			}
+	
+			if (!sessao.podeReservar(quantidade)) {
+				validator.add(new SimpleMessage("", "Não existem ingressos disponíveis"));
+			}
+	
+			// em caso de erro, redireciona para a lista de sessao
+			validator.onErrorRedirectTo(this).sessao(sessao.getId());
+	
+			BigDecimal precoTotal = CalculadoraDePrecos.calcula(sessao, quantidade);
+	
+			sessao.reserva(quantidade);
+	
+			result.include("message", "Sessão reservada com sucesso por " + CURRENCY.format(precoTotal));
+			result.redirectTo(IndexController.class).index();
 		}
-
-		if (!sessao.podeReservar(quantidade)) {
-			validator.add(new SimpleMessage("", "Não existem ingressos disponíveis"));
-		}
-
-		// em caso de erro, redireciona para a lista de sessao
-		validator.onErrorRedirectTo(this).sessao(sessao.getId());
-
-		BigDecimal precoTotal = CalculadoraDePrecos.calcula(sessao, quantidade);
-
-		sessao.reserva(quantidade);
-
-		result.include("message", "Sessão reservada com sucesso por " + CURRENCY.format(precoTotal));
-
-		result.redirectTo(IndexController.class).index();
+		
 	}
 
 	private Espetaculo carregaEspetaculo(Long espetaculoId) {
